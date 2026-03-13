@@ -28,7 +28,7 @@ Dataset source:
 
 https://www.kaggle.com/competitions/rossmann-store-sales
 
-Download the dataset and store the files in a directory named `data/raw`.
+Download the dataset and store the files in a directory named `data/`.
 
 Required files:
 
@@ -65,9 +65,9 @@ Model performance using chronological train/validation/test splits to prevent ti
 
 | Model | Validation MAE | Test MAE | Notes |
 |------|------|------|------|
-| Lag Baseline | 845.2 | 852.1 | Uses lag_7 demand |
-| RandomForest | 793.4 | 801.0 | Captures nonlinear demand |
-| LightGBM | 742.8 | 748.6 | Best performance |
+| Lag Baseline | 2433.9 | 3063.0 | Uses lag_7 demand |
+<!-- | RandomForest | 793.4 | 801.0 | Captures nonlinear demand | -->
+| LightGBM | 561.4 | 805.4 | Best performance |
 
 **Selected model for deployment:** LightGBM
 
@@ -130,7 +130,7 @@ demand_forecasting_ml/
 Clone the repository, install dependencies, and train the model.
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/christianmcb/demand_forecasting_ml.git
 cd demand_forecasting_ml
 
 pip install -r requirements.txt
