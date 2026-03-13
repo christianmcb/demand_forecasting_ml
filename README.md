@@ -13,7 +13,7 @@ The trained model can be deployed as a **FastAPI inference service** and queried
 Interactive API documentation:
 
 ```
-http://localhost:8000/docs
+https://demandforecastingml-production.up.railway.app/docs
 ```
 
 ---
