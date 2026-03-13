@@ -1,0 +1,10 @@
+model:
+  learning_rate: 0.03
+  n_estimators: 2000
+  num_leaves: 31
+  subsample: 0.8
+  colsample_bytree: 0.8
+
+features:
+  lag_windows: [1,7,14,28]
+  rolling_windows: [7,14]

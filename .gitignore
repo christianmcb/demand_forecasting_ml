@@ -1,0 +1,66 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Conda
+.conda/
+conda-meta/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Pytest
+.pytest_cache/
+.coverage
+htmlcov/
+
+# MLflow
+mlruns/
+mlflow.db
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+
+# Build / packaging
+build/
+dist/
+*.egg-info/
+
+# Logs
+*.log
+
+# Local data artifacts
+data/raw/*.csv
+data/processed/*.csv
+data/predictions/*.csv
+
+# Keep folder structure
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!data/predictions/.gitkeep
+
+# Models
+models/*.pkl
+models/*.joblib
+models/*.bin
+models/*.json
+
+# Keep folder structure
+!models/.gitkeep
+
+# Notebook outputs
+notebooks/outputs/*
+!notebooks/outputs/.gitkeep
+
+# Temporary files
+*.tmp
+*.bak
