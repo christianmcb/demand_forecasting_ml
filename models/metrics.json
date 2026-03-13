@@ -1,0 +1,42 @@
+{
+  "baseline_model": "lag_7",
+  "baseline_mae": 2433.9460340209175,
+  "baseline_rmse": 3063.02048035433,
+  "val_mae": 613.7486168838632,
+  "val_rmse": 884.548735855021,
+  "test_mae": 561.4045908081778,
+  "test_rmse": 805.4253501293497,
+  "n_train_rows": 617089,
+  "n_val_rows": 137418,
+  "n_test_rows": 58611,
+  "features": [
+    "Store",
+    "Promo",
+    "SchoolHoliday",
+    "StateHoliday",
+    "StoreType",
+    "Assortment",
+    "CompetitionDistance",
+    "Promo2",
+    "month",
+    "day",
+    "week_of_year",
+    "day_of_week",
+    "is_weekend",
+    "is_month_start",
+    "is_month_end",
+    "lag_1",
+    "lag_7",
+    "lag_14",
+    "lag_28",
+    "rolling_mean_7",
+    "rolling_mean_14",
+    "rolling_std_7"
+  ],
+  "categorical_features": [
+    "Store",
+    "StateHoliday",
+    "StoreType",
+    "Assortment"
+  ]
+}

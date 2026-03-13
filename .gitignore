@@ -49,10 +49,10 @@ data/predictions/*.csv
 !data/predictions/.gitkeep
 
 # Models
-models/*.pkl
-models/*.joblib
-models/*.bin
-models/*.json
+models/*
+!models/.gitkeep
+!models/lightgbm_model.pkl
+!models/metrics.json
 
 # Keep folder structure
 !models/.gitkeep
