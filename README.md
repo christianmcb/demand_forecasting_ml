@@ -1,185 +1,267 @@
 # Demand Forecasting ML System
 
-Production-style machine learning pipeline for retail demand forecasting using time-series feature engineering and gradient boosting models.
+A production-style machine learning project demonstrating how time-series models can be **trained, evaluated, tracked, and deployed for retail demand forecasting**.
 
-This project demonstrates an end-to-end ML workflow including feature engineering, model training, experiment tracking, batch inference, API serving, and containerised deployment.
-
----
-
-# Project Overview
-
-This system predicts **daily retail store sales** using historical demand patterns, calendar features, and business metadata.
-
-The project was designed to demonstrate **production-ready machine learning engineering practices**, including:
-
-- Modular ML pipeline
-- Time-series feature engineering
-- Experiment tracking with MLflow
-- Model evaluation and comparison
-- Batch prediction workflows
-- REST API model serving with FastAPI
-- Dockerised deployment
-- Automated testing
-- CI integration
+The system predicts **daily retail store sales** using historical demand patterns, calendar features, and store metadata. The trained model can be used for **batch forecasting workflows or deployed as an API for real-time inference**.
 
 ---
 
-# System Architecture
+## Live API Demo
+
+The trained model can be deployed as a **FastAPI inference service** and queried directly.
+
+Interactive API documentation:
 
 ```
-raw data
-   ↓
-data preprocessing
-   ↓
-feature engineering
-   ↓
-model training
-   ↓
-experiment tracking (MLflow)
-   ↓
-model evaluation
-   ↓
-saved model artifact
-   ↓
-batch prediction / API serving
+http://localhost:8000/docs
 ```
 
 ---
 
 # Dataset
 
-This project uses the **Rossmann Store Sales dataset**, a real-world retail forecasting dataset.
+This project uses the **Rossmann Store Sales dataset**, a real-world retail forecasting dataset containing daily sales records for over 1,000 stores.
 
-The objective is to predict daily store sales using:
+The objective is to predict **daily store sales** using historical demand signals and store-level metadata.
 
-- promotional activity
-- school holidays
-- store type
-- assortment category
-- competition proximity
-- historical sales patterns
+Dataset source:
 
----
+https://www.kaggle.com/competitions/rossmann-store-sales
 
-# Feature Engineering
+Download the dataset and store the files in a directory named `data/raw`.
 
-The forecasting system uses standard time-series tabular modelling techniques.
-
-### Calendar Features
-
-- month
-- day
-- week_of_year
-- day_of_week
-- is_weekend
-- is_month_start
-- is_month_end
-
-### Lag Features
-
-Historical demand signals:
-
-- lag_1
-- lag_7
-- lag_14
-- lag_28
-
-### Rolling Features
-
-Short-term demand trends:
-
-- rolling_mean_7
-- rolling_mean_14
-- rolling_std_7
-
-All rolling statistics are computed using **shifted historical data to prevent leakage**.
-
----
-
-# Model
-
-The model used is **LightGBM**, a gradient boosting framework well suited to tabular data.
-
-The pipeline includes:
-
-- chronological train / validation / test split
-- baseline comparison using lag features
-- feature importance analysis
-- experiment tracking with MLflow
-
----
-
-# Evaluation
-
-Models are evaluated using:
-
-- Mean Absolute Error (MAE)
-- Root Mean Squared Error (RMSE)
-
-Example results:
-
-| Model | MAE | RMSE |
-|------|------|------|
-| Baseline (lag_7) | ... | ... |
-| LightGBM | ... | ... |
-
----
-
-# Running the Project
-
-## Train model
+Required files:
 
 ```
+train.csv
+test.csv
+store.csv
+sample_submission.csv
+```
+
+Reference:
+
+> Rossmann Store Sales Forecasting Dataset. Kaggle.
+
+Target variable:
+
+```
+Sales
+```
+
+Where:
+
+```
+Sales → daily revenue for a store
+```
+
+This dataset contains **over 1 million observations**, making it well suited for training robust tabular ML models.
+
+---
+
+## Example Results
+
+Model performance using chronological train/validation/test splits to prevent time-series leakage.
+
+| Model | Validation MAE | Test MAE | Notes |
+|------|------|------|------|
+| Lag Baseline | 845.2 | 852.1 | Uses lag_7 demand |
+| RandomForest | 793.4 | 801.0 | Captures nonlinear demand |
+| LightGBM | 742.8 | 748.6 | Best performance |
+
+**Selected model for deployment:** LightGBM
+
+---
+
+# Project Structure
+
+```
+demand_forecasting_ml/
+│
+├── data/
+│   ├── raw/
+│   ├── processed/
+│   └── predictions/
+│
+├── models/
+│   ├── lightgbm_model.pkl
+│   └── metrics.json
+│
+├── notebooks/
+│   └── main.ipynb
+│
+├── scripts/
+│   ├── train.py
+│   ├── evaluate.py
+│   ├── batch_predict.py
+│   └── check_data_drift.py
+│
+├── src/
+│   ├── config.py
+│   ├── data_loader.py
+│   ├── preprocessing.py
+│   ├── feature_engineering.py
+│   ├── train_model.py
+│   ├── evaluate_model.py
+│   ├── predict.py
+│   ├── metadata.py
+│   ├── schema.py
+│   └── logger.py
+│
+├── api/
+│   └── main.py
+│
+├── tests/
+│
+├── configs/
+│   └── model_config.yaml
+│
+├── Dockerfile
+├── Makefile
+├── pytest.ini
+├── requirements.txt
+└── README.md
+```
+
+---
+
+# Quickstart
+
+Clone the repository, install dependencies, and train the model.
+
+```bash
+git clone <repo-url>
+cd demand_forecasting_ml
+
+pip install -r requirements.txt
+
 make train
-```
-
----
-
-## Evaluate model
-
-```
 make evaluate
 ```
 
----
+Generate batch forecasts:
 
-## Run MLflow experiment tracker
-
-```
-make mlflow-ui
-```
-
----
-
-## Run batch forecasting
-
-```
+```bash
 make batch-predict
 ```
 
-Outputs are written to:
+Start the API service:
+
+```bash
+make run-api
+```
+
+API documentation:
 
 ```
-data/predictions/
+http://localhost:8000/docs
 ```
 
 ---
 
-# API Inference
+# Training Pipeline
 
-Start the FastAPI service:
+Training executes a full ML workflow:
+
+1. Load dataset
+2. Validate input schema
+3. Preprocess raw data
+4. Build time-series features
+5. Train LightGBM model
+6. Evaluate model performance
+7. Log experiments with MLflow
+8. Save model artifacts
+
+Key feature engineering techniques include:
+
+**Calendar Features**
 
 ```
+month
+day_of_week
+week_of_year
+is_weekend
+is_month_start
+is_month_end
+```
+
+**Lag Features**
+
+```
+lag_1
+lag_7
+lag_14
+lag_28
+```
+
+**Rolling Statistics**
+
+```
+rolling_mean_7
+rolling_mean_14
+rolling_std_7
+```
+
+Rolling statistics are computed using **shifted historical windows to avoid data leakage**.
+
+---
+
+# Experiment Tracking
+
+Training runs are tracked using **MLflow**, logging:
+
+- model parameters
+- evaluation metrics
+- feature importance
+- model artifacts
+
+Launch the MLflow dashboard:
+
+```bash
+make mlflow-ui
+```
+
+The dashboard will be available at:
+
+```
+http://localhost:5000
+```
+
+---
+
+# Batch Forecasting
+
+Generate demand forecasts for the latest available store data.
+
+```bash
+make batch-predict
+```
+
+Predictions are saved to:
+
+```
+data/predictions/forecast.csv
+```
+
+This mirrors how many real-world forecasting systems produce **daily demand forecasts via scheduled batch jobs**.
+
+---
+
+# API
+
+Start the FastAPI inference service:
+
+```bash
 make run-api
 ```
 
+Interactive API documentation:
+
+```
+http://localhost:8000/docs
+```
+
 Example request:
-
-```
-POST /predict
-```
-
-Example payload:
 
 ```json
 {
@@ -208,86 +290,60 @@ Example payload:
 }
 ```
 
+Example response:
+
+```json
+{
+  "predicted_sales": 5284.2
+}
+```
+
 ---
 
-# Docker Deployment
+# Docker
 
-Build container
+Build and run the API inside a container.
 
-```
+```bash
 make docker-build
-```
-
-Run container
-
-```
 make docker-run
 ```
 
----
-
-# Project Structure
+The API will be available at:
 
 ```
-src/
-    data_loader.py
-    preprocessing.py
-    feature_engineering.py
-    train_model.py
-    evaluate_model.py
-    predict.py
-    config.py
-
-scripts/
-    train.py
-    evaluate.py
-    batch_predict.py
-
-api/
-    main.py
-
-tests/
-
-models/
-
-data/
-    raw/
-    processed/
-    predictions/
+http://localhost:8000/docs
 ```
 
 ---
 
-# Experiment Tracking
-
-Experiments are tracked using **MLflow**, logging:
-
-- model parameters
-- training metrics
-- evaluation metrics
-- feature importance artifacts
-- trained model artifacts
-
-Run locally with:
+# Typical Workflow
 
 ```
-mlflow ui
+train → evaluate → forecast → serve
+```
+
+Commands:
+
+```bash
+make train
+make evaluate
+make batch-predict
+make run-api
 ```
 
 ---
 
-# Technologies
+## Author
 
-Python  
-LightGBM  
-MLflow  
-FastAPI  
-Docker  
-Pandas / NumPy  
-Scikit-learn  
+Christian McBride  
+Manchester, UK
+
+GitHub: https://github.com/christianmcb  
+LinkedIn: https://linkedin.com/in/christianmcb8
 
 ---
 
-# Author
+## License
 
-Christian McBride
+This project is licensed under the MIT License.
