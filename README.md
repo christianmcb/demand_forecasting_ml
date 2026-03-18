@@ -6,6 +6,63 @@ The system predicts **daily retail store sales** using historical demand pattern
 
 ---
 
+## Core Components
+
+- **Time-Series Data Processing**
+  - Date parsing and temporal feature extraction (year, month, week, etc.)
+  - Handling missing values and irregular time intervals
+  - Lag and rolling window feature generation
+
+- **Feature Engineering**
+  - Creation of autoregressive features (lags, rolling means)
+  - Calendar-based signals (seasonality, promotions, holidays)
+  - Structured pipeline for reproducible transformations
+
+- **Model Training & Evaluation**
+  - Tree-based models (e.g. XGBoost, LightGBM) for forecasting
+  - Time-aware validation (train/validation splits respecting temporal order)
+  - Evaluation using appropriate forecasting metrics (e.g. RMSE, MAE)
+
+- **Forecasting Strategy**
+  - Supervised learning formulation of time-series problem
+  - Multi-step / recursive forecasting approach
+
+- **API Deployment**
+  - FastAPI service for generating forecasts
+  - Dockerised for reproducibility and portability
+
+- **Project Structure**
+  - Modular design separating data, features, models, and serving
+  - Designed to resemble production ML systems
+
+---
+
+## Current Limitations
+
+- No dedicated **time-series cross-validation framework** (e.g. backtesting loops)
+- Limited **forecast horizon strategy optimisation** (recursive vs direct vs hybrid)
+- No **probabilistic forecasting** (prediction intervals / uncertainty)
+- No **model versioning or experiment tracking**
+- No **data drift or concept drift monitoring**
+- No automated **retraining pipeline**
+- Feature engineering is not yet abstracted into a reusable pipeline
+
+---
+
+## Next Steps
+
+- Implement **backtesting framework** for robust time-series validation
+- Add **probabilistic forecasting** (e.g. quantile regression / prediction intervals)
+- Compare with dedicated time-series models (e.g. ARIMA, Prophet, deep learning)
+- Introduce **model versioning + experiment tracking**
+- Build **automated retraining pipeline** (scheduled updates)
+- Add **data & concept drift detection**
+- Optimise **multi-step forecasting strategies**
+- Deploy to cloud (AWS/GCP) with scalable inference
+- Optional: integrate **feature store for time-series features**
+
+---
+
 ## Live API Demo
 
 The trained model can be deployed as a **FastAPI inference service** and queried directly.

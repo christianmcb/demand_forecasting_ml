@@ -58,6 +58,7 @@ models/*
 !models/.gitkeep
 
 # Notebook outputs
+notebooks/*
 notebooks/outputs/*
 !notebooks/outputs/.gitkeep
 
