@@ -35,7 +35,7 @@ The system predicts **daily retail store sales** using historical demand pattern
   - Modular design separating data, features, models, and serving
   - Designed to resemble production ML systems
 
----
+<!-- ---
 
 ## Current Limitations
 
@@ -59,7 +59,7 @@ The system predicts **daily retail store sales** using historical demand pattern
 - Add **data & concept drift detection**
 - Optimise **multi-step forecasting strategies**
 - Deploy to cloud (AWS/GCP) with scalable inference
-- Optional: integrate **feature store for time-series features**
+- Optional: integrate **feature store for time-series features** -->
 
 ---
 
